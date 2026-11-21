@@ -32,9 +32,13 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        $project->load(['client', 'bids.developer']);
+        $project->load([
+            'client',
+            'bids' => fn ($q) => $q->with('developer')->orderByDesc('is_winner')->orderBy('harga'),
+        ]);
+        $developers = User::where('role', 'developer')->get();
 
-        return view('projects.show', compact('project'));
+        return view('projects.show', compact('project', 'developers'));
     }
 
     public function edit(Project $project)

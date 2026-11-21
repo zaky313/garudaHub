@@ -37,4 +37,10 @@ class Project extends Model
     {
         return $this->hasMany(Bid::class);
     }
+
+        // Lelang terbuka: status terbuka dan batas lelang belum lewat
+    public function isOpen(): bool
+    {
+        return $this->status === 'terbuka' && $this->batas_lelang->gte(today());
+    }
 }
