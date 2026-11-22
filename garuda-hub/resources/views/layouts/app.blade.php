@@ -26,10 +26,30 @@
     </style>
 </head>
 <body>
-    <nav><a href="{{ route('projects.index') }}">Garuda-Hub</a></nav>
+    <nav>
+        <div class="row">
+            <a href="{{ route('projects.index') }}">Garuda-Hub</a>
+            <span>
+                @auth
+                    <span style="color:#fff">{{ auth()->user()->nama }} ({{ auth()->user()->role }})</span>
+                    <form method="POST" action="{{ route('logout') }}" style="display:inline">
+                        @csrf
+                        <button type="submit" class="btn btn-gray">Keluar</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}">Masuk</a> &nbsp;
+                    <a href="{{ route('register') }}">Daftar</a>
+                @endauth
+            </span>
+        </div>
+    </nav>
     <main>
         @if (session('success'))
             <div class="alert">{{ session('success') }}</div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert" style="background:#f8cecc">{{ session('error') }}</div>
         @endif
         @yield('content')
     </main>
